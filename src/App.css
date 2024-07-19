@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
 :root {
-  --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --primary-color: #007bff;
+    --primary-color-hover: #0056b3;
+    --border-color: #ccc;
+    --input-padding: 10px;
+    --input-border-radius: 4px;
+    --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 body {
     background-color: #bfb9b9bd;
-    display: flex;
+    
     align-items: center;
     justify-content: center;
     min-height: 100vh;
@@ -21,6 +26,8 @@ body {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
   }
   
   .register-container h2 {
@@ -56,7 +63,7 @@ body {
     background-color: #0056b3;
   }
   
-  .register-container, .login-container, .home-container {
+  .register-container, .home-container {
     max-width: 500px;
     margin: auto;
     padding: 20px;
@@ -122,4 +129,323 @@ body {
     color: #888;
   }
   
+  .success-message {
+    color: green;
+  }
   
+  .error-message {
+    color: red;
+  }
+  
+  .login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 10px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+  }
+  
+  
+  
+  .input-group {
+    display: block;
+    margin-bottom: 15px;
+  }
+  
+  
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #151414;
+    border-radius: 4px;
+  }
+  
+  .password-group {
+    position: relative;
+  }
+  
+  .password-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-toggle {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  .message {
+    color: green;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #aaa;
+  }
+  
+  button:not(:disabled):hover {
+    background-color: #0056b3;
+  }
+  
+  p {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  p a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  
+  
+
+  /* Responsiveness */
+@media (max-width: 768px) {
+    .register-container {
+      padding: 15px;
+    }
+  
+    .register-container h2 {
+      font-size: 24px;
+    }
+  
+    .input-group input,
+    button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .register-container {
+      padding: 10px;
+    }
+  
+    .register-container h2 {
+      font-size: 20px;
+    }
+  
+    .input-group input,
+    button {
+      font-size: 12px;
+      padding: 8px;
+    }
+  }
+
+
+
+  /* Home CSS*/
+  .home-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    background-color: #fff;
+    text-align: center;
+    height: 100%;
+  }
+  
+  .home-container h2 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-size: 28px;
+  }
+  
+  .home-container p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .home-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .home-content button {
+    padding: var(--input-padding);
+    border: none;
+    border-radius: var(--input-border-radius);
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 200px;
+  }
+  
+  .home-content button:hover {
+    background-color: var(--primary-color-hover);
+  }
+  
+  /* Responsiveness */
+  @media (max-width: 768px) {
+    .home-container {
+      padding: 15px;
+    }
+  
+    .home-container h2 {
+      font-size: 24px;
+    }
+  
+    .home-container p {
+      font-size: 16px;
+    }
+  
+    .home-content button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .home-container {
+      padding: 10px;
+    }
+  
+    .home-container h2 {
+      font-size: 20px;
+    }
+  
+    .home-container p {
+      font-size: 14px;
+    }
+  
+    .home-content button {
+      font-size: 12px;
+      padding: 8px;
+    }
+  }
+  
+  /*ADD_MEMBER CSS*/
+
+  .add-member-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    width: 100%;
+    height: 100%;
+  }
+  
+  .add-member-container h2 {
+    margin-bottom: 20px;
+    color: #07488d;
+  }
+  
+  .add-member-form {
+    width: 100%;
+  }
+  
+  .add-member-form .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .add-member-form .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .add-member-form .input-group input,
+  .add-member-form .input-group select,
+  .add-member-form .input-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .add-member-form .input-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .add-member-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #07488d;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-member-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .message {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  
+  .success-message {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  /*Buttons*/
+
+  /* Ajoutez ce CSS pour aligner les boutons sur la même ligne */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.submit-button, .cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #4CAF50; /* Couleur pour le bouton Ajouter */
+  color: white;
+}
+
+.cancel-button {
+  background-color: #f44336; /* Couleur pour le bouton Annuler */
+  color: white;
+}
