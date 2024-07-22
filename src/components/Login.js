@@ -8,6 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [messageType, setMessageType] = useState(''); // 'error' ou 'success'
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // État pour contrôler l'affichage du formulaire
@@ -29,15 +30,17 @@ const Login = () => {
       console.log('Réponse du serveur:', response);
 
       // Stocker le token et l'ID utilisateur dans localStorage
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userId', response.data.userId); // Ajoutez userId si nécessaire
+      localStorage.setItem('token', response.data.date.token);
+      localStorage.setItem('userId', response.data.date.userId); // Ajoutez userId si nécessaire
 
       setMessage('Connexion réussie ! Veuillez patienter pendant que nous vous connectons.');
+      setMessageType('success');
       setIsLoggedIn(true); // Met à jour l'état pour cacher le formulaire
       setTimeout(() => navigate('/home'), 2000); // Redirige vers la page d'accueil après 2 secondes
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Une erreur est survenue';
       setMessage(errorMessage);
+      setMessageType('error');
       console.log(error);
     } finally {
       setLoading(false);
@@ -51,7 +54,11 @@ const Login = () => {
   return (
     <div className="login-container">
       <h2>Connexion</h2>
-      {message && <p className="message">{message}</p>}
+      {message && (
+        <p className={messageType === 'success' ? 'success-message' : 'error-message'}>
+          {message}
+        </p>
+      )}
       {!isLoggedIn && (
         <form onSubmit={handleSubmit}>
           <div className="input-group">

@@ -1,260 +1,292 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../services/axiosSetup';
+import axiosInstance from '../services/axiosSetup'; // Importer l'instance axios configurée
 
 const AddMember = () => {
-  const [formData, setFormData] = useState({
-    nom: '',
-    prenom: '',
-    dateDeNaissance: '',
-    statutMatrimonial: '',
-    conjoint: '',
-    idPere: '',
-    idMere: '',
-    idLien: '',
-    profession: '',
-    religion: '',
-    groupeSanguin: '',
-    signeFa: '',
-    electrophorese: '',
-    activite: ''
-  });
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [dateNaissance, setDateNaissance] = useState('');
+    const [pereName, setPereName] = useState('');
+    const [mereName, setMereName] = useState('');
+    const [isMarried, setIsMarried] = useState('');
+    const [gender, setGender] = useState('');
+    const [religion, setReligion] = useState('');
+    const [bloodGroup, setBloodGroup] = useState('');
+    const [electrophoresis, setElectrophoresis] = useState('');
+    const [signFa, setSignFA] = useState('');
+    const [message, setMessage] = useState('');
+    const [conjointName, setConjointName] = useState('');
+    const [metier, setMetier] = useState('');
+    const [members, setMembers] = useState([]);
+    const [linkTypes, setLinkTypes] = useState([]);
+    const [selectedLinkType, setSelectedLinkType] = useState('');
 
-  const [message, setMessage] = useState('');
-  const [liens, setLiens] = useState([]);
-  const [membres, setMembres] = useState([]);
-  const navigate = useNavigate(); // Hook pour la navigation
+    useEffect(() => {
+        const fetchLinkTypes = async () => {
+            try {
+                const response = await axiosInstance.get('/liens/types');
+                setLinkTypes(response.data);
+            } catch (error) {
+                console.log('Erreur lors de la récupération des types de liens:', error);
+            }
+        };
 
-  useEffect(() => {
-    // Fetch available links and members for selection
-    const fetchLiens = async () => {
-      try {
-        const response = await axiosInstance.get('/api/liens');
-        setLiens(response.data);
-      } catch (error) {
-        console.error('Error fetching liens:', error);
-      }
+        fetchLinkTypes();
+    }, []);
+
+    useEffect(() => {
+        const fetchMembers = async () => {
+            try {
+                const response = await axiosInstance.get('/membres/tous');
+                setMembers(response.data);
+            } catch (error) {
+                console.error('Erreur lors de la récupération des membres', error);
+            }
+        };
+        fetchMembers();
+    }, []);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token'); // Récupérer l'ID de l'utilisateur connecté
+
+        try {
+            const response = await axiosInstance.post('/membres/ajouter', {
+                prenom: firstName,
+                token: token, // Utiliser l'ID de l'utilisateur connecté
+                nom: lastName,
+                date_de_naissance: dateNaissance,
+                id_pere: pereName,
+                id_mere: mereName,
+                statut_matrimonial: isMarried,
+                type_de_lien: selectedLinkType,
+                sexe: gender,
+                religion,
+                groupe_sanguin: bloodGroup,
+                electrophorese: electrophoresis,
+                signe_du_fa: signFa,
+                conjoint: conjointName,
+                profession: metier
+            });
+
+            console.log('Réponse du serveur:', response);
+
+            alert('Ajout réussie!');
+            setMessage('Ajout réussie! Vous avez maintenant un nouveau membre.');
+            resetForm();
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || 'Une erreur est survenue';
+            setMessage(errorMessage);
+            console.log(error);
+        }
     };
 
-    const fetchMembres = async () => {
-      try {
-        const response = await axiosInstance.get('/api/membres');
-        setMembres(response.data);
-      } catch (error) {
-        console.error('Error fetching membres:', error);
-      }
+    const handleCancel = () => {
+        resetForm();
     };
 
-    fetchLiens();
-    fetchMembres();
-  }, []);
+    const resetForm = () => {
+        setFirstName('');
+        setLastName('');
+        setDateNaissance('');
+        setPereName('');
+        setMereName('');
+        setIsMarried('');
+        setGender('');
+        setReligion('');
+        setBloodGroup('');
+        setElectrophoresis('');
+        setSignFA('');
+        setConjointName('');
+        setSelectedLinkType('');
+        setMetier('');
+        setMessage('');
+    };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const utilisateurId = localStorage.getItem('userId'); // Récupérer l'ID de l'utilisateur connecté
-    try {
-      await axiosInstance.post('/membres/ajouter', {
-        ...formData,
-        utilisateurId
-      });
-      setMessage('Membre ajouté avec succès!');
-    } catch (error) {
-      setMessage('Erreur lors de l\'ajout du membre');
-      console.error(error);
-    }
-  };
-
-  const handleCancel = () => {
-    // Réinitialiser le formulaire
-    setFormData({
-      nom: '',
-      prenom: '',
-      dateDeNaissance: '',
-      statutMatrimonial: '',
-      conjoint: '',
-      idPere: '',
-      idMere: '',
-      idLien: '',
-      profession: '',
-      religion: '',
-      groupeSanguin: '',
-      signeFa: '',
-      electrophorese: '',
-      activite: ''
-    });
-
-    // Rediriger vers une autre page, par exemple la page d'accueil
-    navigate('/home');
-  };
-
-  return (
-    <div className="add-member-container">
-      <h2>Ajouter un membre</h2>
-      {message && <p className="message">{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label>Nom :</label>
-          <input
-            type="text"
-            name="nom"
-            value={formData.nom}
-            onChange={handleChange}
-            required
-          />
+    return (
+        <div className="register-member-container">
+            <h2>Ajouter un membre</h2>
+            {message && <p>{message}</p>}
+            <form onSubmit={handleSubmit}>
+                <fieldset>
+                    <legend>Informations générales</legend>
+                    <div>
+                        <label>Nom :</label>
+                        <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Prénom :</label>
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Sexe :</label>
+                        <select
+                            value={gender}
+                            onChange={(e) => setGender(e.target.value)}
+                            required
+                        >
+                            <option value="">Sélectionner...</option>
+                            <option value="Masculin">Masculin</option>
+                            <option value="Feminin">Feminin</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Date de naissance :</label>
+                        <input
+                            type="date"
+                            value={dateNaissance}
+                            onChange={(e) => setDateNaissance(e.target.value)}
+                            required
+                        />
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Informations des parents :</legend>
+                    <div>
+                        <label>Père:</label>
+                        <select
+                            value={pereName}
+                            onChange={(e) => setPereName(e.target.value)}
+                        >
+                            <option value="">Sélectionner un membre...</option>
+                            {members.map((member) => (
+                                <option key={member._id} value={member._id}>
+                                    {member.prenom} {member.nom}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Mère:</label>
+                        <select
+                            value={mereName}
+                            onChange={(e) => setMereName(e.target.value)}
+                        >
+                            <option value="">Sélectionner un membre...</option>
+                            {members.map((member) => (
+                                <option key={member._id} value={member._id}>
+                                    {member.prenom} {member.nom}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Autres informations</legend>
+                    <div>
+                        <label>Type de lien :</label>
+                        <select
+                            value={selectedLinkType}
+                            onChange={(e) => setSelectedLinkType(e.target.value)}
+                            required
+                        >
+                            <option value="">Sélectionner un type de lien...</option>
+                            {linkTypes.map((type) => (
+                                <option key={type} value={type}>
+                                    {type}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label>État matrimonial :</label>
+                        <select
+                            value={isMarried}
+                            onChange={(e) => setIsMarried(e.target.value)}
+                            required
+                        >
+                            <option value="">Sélectionner...</option>
+                            <option value="Marie(e)">Marie(e)</option>
+                            <option value="Celibataire">Celibataire</option>
+                            <option value="Divorce(e)">Divorce(e)</option>
+                            <option value="Veuf(ve)">Veuf(ve)</option>
+                        </select>
+                    </div>
+                    {isMarried === 'Marie(e)' && (
+                        <div>
+                            <label>Nom du conjoint :</label>
+                            <input
+                                type="text"
+                                value={conjointName}
+                                onChange={(e) => setConjointName(e.target.value)}
+                                required
+                            />
+                        </div>
+                    )}
+                    <div>
+                        <label>Profession :</label>
+                        <input
+                            type="text"
+                            value={metier}
+                            onChange={(e) => setMetier(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>Religion :</label>
+                        <select
+                            value={religion}
+                            onChange={(e) => setReligion(e.target.value)}
+                        >
+                            <option value="">Sélectionner...</option>
+                            <option value="Christianisme(Evangelique, Catholique)">Christianisme(Evangelique, Catholique)</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Hindouisme">Hindouisme</option>
+                            <option value="Bouddhisme">Bouddhisme</option>
+                            <option value="Judaisme">Judaïsme</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Groupe sanguin :</label>
+                        <select
+                            value={bloodGroup}
+                            onChange={(e) => setBloodGroup(e.target.value)}
+                        >
+                            <option value="">Sélectionner...</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Signe du Fâ :</label>
+                        <input
+                            type="text"
+                            value={signFa}
+                            onChange={(e) => setSignFA(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>Électrophorèse :</label>
+                        <input
+                            type="text"
+                            value={electrophoresis}
+                            onChange={(e) => setElectrophoresis(e.target.value)}
+                        />
+                    </div>
+                </fieldset>
+                <div className="form-buttons">
+                    <button type="submit">Ajouter</button>
+                    <button type="button" onClick={handleCancel}>Annuler</button>
+                </div>
+            </form>
         </div>
-        <div className="input-group">
-          <label>Prénom :</label>
-          <input
-            type="text"
-            name="prenom"
-            value={formData.prenom}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>Date de naissance :</label>
-          <input
-            type="date"
-            name="dateDeNaissance"
-            value={formData.dateDeNaissance}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>Statut matrimonial :</label>
-          <input
-            type="text"
-            name="statutMatrimonial"
-            value={formData.statutMatrimonial}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>Conjoint :</label>
-          <input
-            type="text"
-            name="conjoint"
-            value={formData.conjoint}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="input-group">
-          <label>Père :</label>
-          <select
-            name="idPere"
-            value={formData.idPere}
-            onChange={handleChange}
-          >
-            <option value="">Sélectionnez</option>
-            {membres.map((membre) => (
-              <option key={membre.id} value={membre.id}>
-                {membre.nom} {membre.prenom}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="input-group">
-          <label>Mère :</label>
-          <select
-            name="idMere"
-            value={formData.idMere}
-            onChange={handleChange}
-          >
-            <option value="">Sélectionnez</option>
-            {membres.map((membre) => (
-              <option key={membre.id} value={membre.id}>
-                {membre.nom} {membre.prenom}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="input-group">
-          <label>Lien de parenté :</label>
-          <select
-            name="idLien"
-            value={formData.idLien}
-            onChange={handleChange}
-          >
-            <option value="">Sélectionnez</option>
-            {liens.map((lien) => (
-              <option key={lien.id} value={lien.id}>
-                {lien.type_de_lien}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="input-group">
-          <label>Profession :</label>
-          <input
-            type="text"
-            name="profession"
-            value={formData.profession}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="input-group">
-          <label>Religion :</label>
-          <input
-            type="text"
-            name="religion"
-            value={formData.religion}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="input-group">
-          <label>Groupe sanguin :</label>
-          <input
-            type="text"
-            name="groupeSanguin"
-            value={formData.groupeSanguin}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="input-group">
-          <label>Signe FA :</label>
-          <input
-            type="text"
-            name="signeFa"
-            value={formData.signeFa}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="input-group">
-          <label>Electrophorèse :</label>
-          <input
-            type="text"
-            name="electrophorese"
-            value={formData.electrophorese}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="input-group">
-          <label>Activité :</label>
-          <input
-            type="text"
-            name="activite"
-            value={formData.activite}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-buttons">
-          <button type="submit" className="submit-button">Ajouter</button>
-          <button type="button" onClick={handleCancel} className="cancel-button">Annuler</button>
-        </div>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default AddMember;

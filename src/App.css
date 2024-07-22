@@ -131,10 +131,16 @@ body {
   
   .success-message {
     color: green;
+    font-size: larger;
+    font-weight: bolder;
+    text-transform: uppercase;
   }
   
   .error-message {
     color: red;
+    font-size: larger;
+    font-weight: bolder;
+    text-transform: uppercase;
   }
   
   .login-container {
@@ -179,11 +185,7 @@ body {
     cursor: pointer;
   }
   
-  .message {
-    color: green;
-    text-align: center;
-    margin-bottom: 10px;
-  }
+ 
   
   button {
     width: 100%;
@@ -344,85 +346,84 @@ body {
   
   /*ADD_MEMBER CSS*/
 
-  .add-member-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+  @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+.register-member-container {
     max-width: 600px;
     margin: 0 auto;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    width: 100%;
-    height: 100%;
-  }
-  
-  .add-member-container h2 {
+    padding: 20px;
+    border: 1px solid blue;
+    border-radius: 15px;
+    background-color: white;
+}
+
+.register-member-container h2 {
+    text-align: center;
     margin-bottom: 20px;
-    color: #07488d;
-  }
-  
-  .add-member-form {
-    width: 100%;
-  }
-  
-  .add-member-form .input-group {
+}
+
+.register-member-container p {
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+
+.register-member-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+fieldset {
     margin-bottom: 15px;
-  }
-  
-  .add-member-form .input-group label {
+    padding: 20px;
+    border: 1px solid red;
+    border-radius: 15px;
+}
+
+legend {
+    padding: 1 5px;
+    font-weight: bold;
+}
+
+.register-member-container label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-  }
-  
-  .add-member-form .input-group input,
-  .add-member-form .input-group select,
-  .add-member-form .input-group textarea {
-    width: 100%;
+}
+
+.register-member-container input[type="text"],
+.register-member-container input[type="date"],
+.register-member-container select {
+    width: 90%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .add-member-form .input-group textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-  
-  .add-member-form button {
-    padding: 10px 20px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 100px;
+}
+
+.register-member-container input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.register-member-container .form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.register-member-container button {
+    padding: 8px;
+    background-color: #338cea;
+    color: black;
     border: none;
-    border-radius: 4px;
-    background-color: #07488d;
-    color: white;
-    font-weight: bold;
+    border-radius: 100px;
     cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .add-member-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  .message {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 4px;
-  }
-  
-  .success-message {
-    background-color: #d4edda;
-    color: #155724;
-  }
-  
-  .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-  }
+    font-size: 16px;
+}
+
+.register-member-container button:hover {
+    background-color: #0f67cb;
+}
   
   /*Buttons*/
 
@@ -438,14 +439,19 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  
 }
 
 .submit-button {
   background-color: #4CAF50; /* Couleur pour le bouton Ajouter */
   color: white;
+  margin-right: 200px;
+  
 }
 
 .cancel-button {
   background-color: #f44336; /* Couleur pour le bouton Annuler */
   color: white;
+  
 }
+

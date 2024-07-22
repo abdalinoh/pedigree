@@ -9,12 +9,16 @@ const axiosInstance = axios.create({
   },
 });
 
-// Ajoutez un intercepteur pour inclure le token dans les requêtes
+// Ajoutez un intercepteur pour inclure le token et l'idUser dans les requêtes
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
+    const idUser = localStorage.getItem('userId'); // Récupérer l'idUser du stockage local
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    if (idUser) {
+      config.headers['idUser'] = idUser; // Ajouter l'idUser dans les en-têtes
     }
     return config;
   },
