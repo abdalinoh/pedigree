@@ -455,3 +455,65 @@ legend {
   
 }
 
+/* familyMembers.css */
+body {
+  margin: 1;
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.family-member-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 100px;
+  border-radius: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 3px solid #ddd;
+  border-radius: 16px;
+}
+
+.submit-button {
+  display: flex;
+  justify-content: center;
+  padding: 10px 200px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  background-color: blue;
+}
+
+p {
+  color: #dc3545;
+  text-align: center;
+}
